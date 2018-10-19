@@ -18,6 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
+            android:layout_marginTop="16dp"
             android:background="@drawable/card_background"
             android:orientation="vertical"
             android:paddingVertical="16dp">
@@ -28,7 +29,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
                 android:hint="Address Ip"
-                android:text="172.19.15.0"
+                android:text="192.168.43.215"
                 android:textColor="@color/grey"
                 android:textStyle="bold" />
 
@@ -38,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
                 android:hint="Address Ip"
-                android:text="8080"
+                android:text="1234"
                 android:textColor="@color/grey"
                 android:textStyle="bold" />
 
@@ -56,15 +57,10 @@
                     android:minHeight="0dp"
                     android:paddingHorizontal="32dp"
                     android:paddingVertical="8dp"
+                    android:layout_marginVertical="4dp"
                     android:text="Connect"
                     android:textColor="#fff" />
 
-                <ProgressBar
-                    android:id="@+id/connection_load"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_marginHorizontal="4dp"
-                    android:visibility="gone" />
                 <ImageButton
                     android:id="@+id/ib_disconnect"
                     android:layout_width="wrap_content"
