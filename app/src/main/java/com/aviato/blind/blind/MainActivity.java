@@ -7,6 +7,10 @@ import android.os.StrictMode;
 import android.speech.tts.TextToSpeech;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
@@ -39,15 +43,24 @@ public class MainActivity extends AppCompatActivity {
     private WebView videoWebView;
     private LinearLayout mainLinearLayout;
     private BottomSheetBehavior bottomSheetBehavior;
-
+    private RecyclerView recyclerView;
+    private AlertRecyclerAdapter alertRecyclerAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initVar();
-
+        setRecyclerView();
         prepareSocketConnection();
         openVideo();
+    }
+
+    private void setRecyclerView() {
+        final RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext(), LinearLayoutManager.VERTICAL));
+        recyclerView.setAdapter(alertRecyclerAdapter);
     }
 
 
@@ -112,6 +125,8 @@ public class MainActivity extends AppCompatActivity {
         ibDisconnect = findViewById(R.id.ib_disconnect);
         mainLinearLayout = findViewById(R.id.main_linear_layout);
         bottomSheetBehavior = BottomSheetBehavior.from(findViewById(R.id.botton_sheet));
+        recyclerView = findViewById(R.id.recycler_view_alert);
+        alertRecyclerAdapter = new AlertRecyclerAdapter(roadInfoArrayList, getApplicationContext());
     }
 
     private class ClientHandlerThread extends AsyncTask<Void, String, Void> {
@@ -149,6 +164,7 @@ public class MainActivity extends AppCompatActivity {
         protected void onProgressUpdate(String... values) {
             textToSpeech.speak(values[0], TextToSpeech.QUEUE_ADD, null);
             roadInfoArrayList.add(new RoadInfo(values[0]));
+            alertRecyclerAdapter.notifyDataSetChanged();
         }
 
         @Override
