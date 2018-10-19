@@ -1,14 +1,22 @@
 package com.aviato.blind.blind;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.speech.tts.TextToSpeech;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
+import android.view.WindowManager;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,13 +36,38 @@ public class MainActivity extends AppCompatActivity {
     private TextToSpeech textToSpeech;
     private ClientHandlerThread clientHandlerThread;
     private ArrayList<RoadInfo> roadInfoArrayList = new ArrayList<RoadInfo>();
+    private WebView videoWebView;
+    private LinearLayout mainLinearLayout;
+    private BottomSheetBehavior bottomSheetBehavior;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initVar();
+
         prepareSocketConnection();
+        openVideo();
+    }
+
+
+    private void openVideo() {
+        videoWebView = findViewById(R.id.web_video_stream);
+        String url = "http://192.168.43.172:8080/video";
+        WebSettings webSettings = videoWebView.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        videoWebView.setInitialScale(getScale());
+        videoWebView.loadUrl(url);
+        videoWebView.setWebViewClient(new WebViewClient());
+    }
+
+    private int getScale() {
+        double PIC_WIDTH = 480;
+        Display display = ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+        int width = display.getWidth();
+        Double val = new Double(width) / new Double(PIC_WIDTH);
+        val = val * 100d;
+        return val.intValue();
     }
 
     private void prepareSocketConnection() {
@@ -77,6 +110,8 @@ public class MainActivity extends AppCompatActivity {
         tvPort = findViewById(R.id.tv_port);
         bnConnect = findViewById(R.id.bn_connect);
         ibDisconnect = findViewById(R.id.ib_disconnect);
+        mainLinearLayout = findViewById(R.id.main_linear_layout);
+        bottomSheetBehavior = BottomSheetBehavior.from(findViewById(R.id.botton_sheet));
     }
 
     private class ClientHandlerThread extends AsyncTask<Void, String, Void> {
