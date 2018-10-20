@@ -1,6 +1,11 @@
 package com.aviato.blind.blind;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.media.AudioAttributes;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.media.SoundPool;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -93,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
         val = val * 100d;
         return val.intValue();
     }
+
     private void openVideo() {
         videoWebView = findViewById(R.id.web_video_stream);
         String url = etStreamLink.getText().toString();
