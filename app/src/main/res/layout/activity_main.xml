@@ -80,17 +80,73 @@
             </LinearLayout>
         </LinearLayout>
 
-        <WebView
-            android:id="@+id/web_video_stream"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginVertical="16dp"
-            android:minWidth="0dp"
-            android:minHeight="0dp"
-            tools:ignore="WebViewLayout">
+            android:layout_gravity="center_vertical"
+            android:orientation="vertical">
 
-        </WebView>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/card_background"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="16dp">
+
+                <EditText
+                    android:id="@+id/et_video_link"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="Video Stream Link"
+                    android:maxLines="1"
+                    android:text="http://192.168.43.172:8080/video"
+                    android:textColor="@color/grey"
+                    android:textSize="16sp" />
+
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/video_loader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="0dp"
+                    android:minHeight="0dp"
+                    android:padding="0dp"
+                    android:scaleType="centerCrop"
+                    android:visibility="gone"
+                    app:lottie_autoPlay="true"
+                    app:lottie_fileName="video_cam.json"
+                    app:lottie_loop="true"
+                    app:lottie_scale="0.2" />
+
+                <ImageButton
+                    android:id="@+id/ib_stream"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="#fff"
+                    android:src="@drawable/ic_stream_video" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_web_view"
+                android:gravity="center_vertical"
+                android:paddingVertical="16dp">
+
+                <WebView
+                    android:id="@+id/web_video_stream"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:visibility="gone"
+                    tools:ignore="WebViewLayout">
+
+                </WebView>
+            </LinearLayout>
+        </LinearLayout>
 
     </LinearLayout>
 
@@ -102,7 +158,8 @@
         android:orientation="vertical"
         app:behavior_hideable="false"
         app:behavior_peekHeight="132dp"
-        app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
+        app:layout_behavior="android.support.design.widget.BottomSheetBehavior"
+        tools:ignore="MissingPrefix">
 
 
         <LinearLayout

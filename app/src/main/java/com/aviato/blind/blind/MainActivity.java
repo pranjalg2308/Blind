@@ -19,10 +19,13 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.airbnb.lottie.LottieAnimationView;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -45,14 +48,34 @@ public class MainActivity extends AppCompatActivity {
     private BottomSheetBehavior bottomSheetBehavior;
     private RecyclerView recyclerView;
     private AlertRecyclerAdapter alertRecyclerAdapter;
+    private LottieAnimationView lottieAnimationView;
+    private ImageButton ibStream;
+    private EditText etStreamLink;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initVar();
+        setUpVideoStream();
         setRecyclerView();
         prepareSocketConnection();
-        openVideo();
+
+    }
+
+
+    private void setUpVideoStream() {
+        ibStream.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!etStreamLink.getText().toString().isEmpty()) {
+                    lottieAnimationView.setVisibility(View.VISIBLE);
+                    ibStream.setVisibility(View.GONE);
+                    lottieAnimationView.setAnimation("video_cam.json");
+                    lottieAnimationView.playAnimation();
+                    openVideo();
+                }
+            }
+        });
     }
 
     private void setRecyclerView() {
@@ -63,25 +86,26 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(alertRecyclerAdapter);
     }
 
-
-    private void openVideo() {
-        videoWebView = findViewById(R.id.web_video_stream);
-        String url = "http://192.168.43.172:8080/video";
-        WebSettings webSettings = videoWebView.getSettings();
-        webSettings.setJavaScriptEnabled(true);
-        videoWebView.setInitialScale(getScale());
-        videoWebView.loadUrl(url);
-        videoWebView.setWebViewClient(new WebViewClient());
-    }
-
     private int getScale() {
-        double PIC_WIDTH = 480;
         Display display = ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
         int width = display.getWidth();
-        Double val = new Double(width) / new Double(PIC_WIDTH);
+        Double val = new Double(width) / new Double(640);
         val = val * 100d;
         return val.intValue();
     }
+    private void openVideo() {
+        videoWebView = findViewById(R.id.web_video_stream);
+        String url = etStreamLink.getText().toString();
+        WebSettings webSettings = videoWebView.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        webSettings.setLoadWithOverviewMode(true);
+        webSettings.setUseWideViewPort(true);
+        videoWebView.setInitialScale(getScale());
+        videoWebView.loadUrl(url);
+        videoWebView.setWebViewClient(new WebViewClient());
+        videoWebView.setVisibility(View.VISIBLE);
+    }
+
 
     private void prepareSocketConnection() {
         textToSpeech = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
@@ -127,6 +151,9 @@ public class MainActivity extends AppCompatActivity {
         bottomSheetBehavior = BottomSheetBehavior.from(findViewById(R.id.botton_sheet));
         recyclerView = findViewById(R.id.recycler_view_alert);
         alertRecyclerAdapter = new AlertRecyclerAdapter(roadInfoArrayList, getApplicationContext());
+        lottieAnimationView = findViewById(R.id.video_loader);
+        ibStream = findViewById(R.id.ib_stream);
+        etStreamLink = findViewById(R.id.et_video_link);
     }
 
     private class ClientHandlerThread extends AsyncTask<Void, String, Void> {
