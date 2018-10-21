@@ -104,7 +104,7 @@
                     android:layout_weight="1"
                     android:hint="Video Stream Link"
                     android:maxLines="1"
-                    android:text="http://192.168.43.172:8080/video"
+                    android:text="http://192.168.43.37:8080/video"
                     android:textColor="@color/grey"
                     android:textSize="16sp" />
 

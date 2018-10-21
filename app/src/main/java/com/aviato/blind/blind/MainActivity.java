@@ -195,9 +195,23 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onProgressUpdate(String... values) {
-            textToSpeech.speak(values[0], TextToSpeech.QUEUE_ADD, null);
+            String receivedString = values[0];
+            int indexUnderScore = receivedString.indexOf("_");
+            String objectString = receivedString.substring(0,indexUnderScore);
+            int objectCount = Integer.parseInt(receivedString.substring(indexUnderScore+1));
+
+            textToSpeech.speak(getSentence(objectString,objectCount), TextToSpeech.QUEUE_ADD, null);
             roadInfoArrayList.add(new RoadInfo(values[0]));
             alertRecyclerAdapter.notifyDataSetChanged();
+        }
+
+        private String getSentence(String objectString, int objectCount){
+            if (objectCount>=75){
+                switch (objectString){
+                    case "Person"
+                }
+            }
+            return null;
         }
 
         @Override
