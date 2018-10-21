@@ -1,11 +1,6 @@
 package com.aviato.blind.blind;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.media.AudioAttributes;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
-import android.media.SoundPool;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -56,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
     private LottieAnimationView lottieAnimationView;
     private ImageButton ibStream;
     private EditText etStreamLink;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -196,19 +192,26 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onProgressUpdate(String... values) {
             String receivedString = values[0];
-            int indexUnderScore = receivedString.indexOf("_");
-            String objectString = receivedString.substring(0,indexUnderScore);
-            int objectCount = Integer.parseInt(receivedString.substring(indexUnderScore+1));
-
-            textToSpeech.speak(getSentence(objectString,objectCount), TextToSpeech.QUEUE_ADD, null);
+            textToSpeech.speak(values[0], TextToSpeech.QUEUE_ADD, null);
             roadInfoArrayList.add(new RoadInfo(values[0]));
             alertRecyclerAdapter.notifyDataSetChanged();
         }
 
-        private String getSentence(String objectString, int objectCount){
-            if (objectCount>=75){
-                switch (objectString){
-                    case "Person"
+        private String getSentence(String objectString, int objectCount) {
+            Log.e("String recieved", objectString);
+            if (objectCount >= 75) {
+                switch (objectString) {
+                    case "Person":
+                        if (objectCount >= 400)
+                            return "There are a group of people ahead";
+                        return "There is a person or two ahead";
+                    case "Dog":
+                        return null;
+                    default:
+                        if (objectCount < 120)
+                            return objectString + " ahead";
+                        else
+                            return "A few " + objectString + "ahead";
                 }
             }
             return null;
