@@ -6,3 +6,6 @@ This project identifies object in front of the camera and assists the person usi
 - Video is then processed using tensor flow and OpenCV, which detects obstacle ahead.
 - Detected Objects are then labeled and sent to the user device using sockets
 - The labels sent are then converted to speech, which tells the visually impaired about the scenario ahead him 
+![](https://github.com/pranjalg2308/Blind/blob/master/slides/slide1.png?raw=true)
+![](https://github.com/pranjalg2308/Blind/blob/master/slides/slide2.png?raw=true)
+![](https://github.com/pranjalg2308/Blind/blob/master/slides/slide3.png?raw=true)
